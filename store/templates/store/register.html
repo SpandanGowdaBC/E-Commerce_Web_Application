@@ -1,0 +1,64 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Register - Local Store{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="auth-page">
+        <div class="auth-card">
+            <h2>Create Your Account</h2>
+            <p class="auth-subtitle">Join us and start shopping today!</p>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="post" action="{% url 'user_register' %}" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name" name="first_name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" id="last_name" name="last_name">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Username *</label>
+                    <input type="text" id="username" name="username" required autofocus>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password_confirm">Confirm Password *</label>
+                    <input type="password" id="password_confirm" name="password_confirm" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Create Account</button>
+            </form>
+            
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{% url 'user_login' %}">Login here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

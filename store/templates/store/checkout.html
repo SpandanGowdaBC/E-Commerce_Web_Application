@@ -1,0 +1,50 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Checkout - Local Store{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Checkout</h1>
+    </div>
+
+    <div class="checkout-page">
+        <div class="checkout-form-section">
+            <form method="post" action="{% url 'checkout' %}" class="checkout-form">
+                {% csrf_token %}
+                <h2>Shipping Information</h2>
+                
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required value="{% if user.is_authenticated %}{{ user.email }}{% endif %}">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone *</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Shipping Address *</label>
+                    <textarea id="address" name="address" rows="4" required placeholder="Enter your complete shipping address"></textarea>
+                </div>
+
+                <h2>Order Summary</h2>
+                <div class="order-summary-checkout">
+                    {% for item in cart.items.all %}
+                    <div class="order-item">
+                        <span>{{ item.product.name }} x {{ item.quantity }}</span>
+                        <span>₹{{ item.total_price }}</span>
+                    </div>
+                    {% endfor %}
+                    <div class="order-total">
+                        <strong>Total: ₹{{ cart.total_price }}</strong>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Place Order</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

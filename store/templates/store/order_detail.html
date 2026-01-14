@@ -1,0 +1,127 @@
+{% extends 'store/base.html' %}
+
+{% block title %}Order #{{ order.order_number }} - Local Store{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>Order #{{ order.order_number }}</h1>
+        <a href="{% url 'order_list' %}" class="btn btn-secondary">Back to Orders</a>
+    </div>
+
+    <div class="order-detail-page">
+        <div class="order-info-card">
+            <h2>Order Information</h2>
+            <div class="info-row">
+                <strong>Order Number:</strong>
+                <span>{{ order.order_number }}</span>
+            </div>
+            <div class="info-row">
+                <strong>Order Date:</strong>
+                <span>{{ order.created_at|date:"M d, Y H:i" }}</span>
+            </div>
+            <div class="info-row">
+                <strong>Status:</strong>
+                <span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span>
+            </div>
+            <div class="info-row">
+                <strong>Email:</strong>
+                <span>{{ order.email }}</span>
+            </div>
+            <div class="info-row">
+                <strong>Phone:</strong>
+                <span>{{ order.phone }}</span>
+            </div>
+            <div class="info-row">
+                <strong>Shipping Address:</strong>
+                <span>{{ order.shipping_address }}</span>
+            </div>
+        </div>
+
+        <div class="order-tracking">
+            <h2>Order Tracking</h2>
+            <div class="tracking-steps">
+                <div class="tracking-step {% if order.status != 'cancelled' %}completed{% endif %}">
+                    <div class="step-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-content">
+                        <h4>Order Placed</h4>
+                        <p>{{ order.created_at|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+                <div class="tracking-step {% if order.status in 'processing,shipped,delivered' %}completed{% endif %}">
+                    <div class="step-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-content">
+                        <h4>Processing</h4>
+                        {% if order.status in 'processing,shipped,delivered' %}
+                        <p>Order is being prepared</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="tracking-step {% if order.status in 'shipped,delivered' %}completed{% endif %}">
+                    <div class="step-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-content">
+                        <h4>Shipped</h4>
+                        {% if order.status in 'shipped,delivered' %}
+                        <p>Order has been shipped</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="tracking-step {% if order.status == 'delivered' %}completed{% endif %}">
+                    <div class="step-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="step-content">
+                        <h4>Delivered</h4>
+                        {% if order.status == 'delivered' %}
+                        <p>Order has been delivered</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="order-items-card">
+            <h2>Order Items</h2>
+            <table class="order-items-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.items.all %}
+                    <tr>
+                        <td>
+                            <div class="order-item-product">
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                                {% endif %}
+                                <span>{{ item.product.name }}</span>
+                            </div>
+                        </td>
+                        <td>{{ item.quantity }}</td>
+                        <td>₹{{ item.price }}</td>
+                        <td>₹{{ item.total }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><strong>Total:</strong></td>
+                        <td><strong>₹{{ order.total_price }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
