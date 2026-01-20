@@ -143,7 +143,7 @@ python manage.py createsuperuser
 
 ## Need Help?
 
-- 📧 Email: support@localstore.com
+- 📧 Email: champspand@gmail.com
 - 🐛 Issues: [GitHub Issues](https://github.com/yourusername/Local_Store_ecommerce/issues)
 - 📚 Documentation: See README.md
 

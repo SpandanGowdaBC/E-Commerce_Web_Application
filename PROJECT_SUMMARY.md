@@ -376,7 +376,7 @@ This application is suitable for:
 - **Demo**: [Live Demo Link]
 - **Documentation**: See README.md
 - **Issues**: GitHub Issues
-- **Support**: support@localstore.com
+- **Support**: champspand@gmail.com
 
 ---
 

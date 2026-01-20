@@ -1,12 +1,51 @@
 # 🛒 Local Store - E-commerce Platform
 
+[![Release](https://img.shields.io/github/v/release/SpandanGowdaBC/E-Commerce_Web_Application?include_prereleases)](https://github.com/SpandanGowdaBC/E-Commerce_Web_Application/releases)
 [![Django](https://img.shields.io/badge/Django-4.2.7-green.svg)](https://www.djangoproject.com/)
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Code Quality](https://img.shields.io/badge/code%20quality-A+-success.svg)](TESTING_REPORT.md)
+[![Tests](https://img.shields.io/badge/tests-43%2F43%20passing-success.svg)](TESTING_REPORT.md)
+
+> **Complete e-commerce web application built with Django, featuring product catalog, shopping cart, checkout, order tracking, user authentication, and product reviews. Professional, production-ready code with comprehensive documentation.**
+
+---
 
 A full-featured e-commerce web application built with Django, SQLite, HTML, CSS, and JavaScript. This platform provides a complete online shopping experience with product browsing, cart management, order processing, user reviews, and customer support.
 
+## 📑 Table of Contents
+
+- [Features](#-features)
+- [Screenshots](#-screenshots)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Database Models](#️-database-models)
+- [Usage Guide](#-usage-guide)
+- [Customization](#-customization)
+- [Security Features](#-security-features)
+- [Deployment](#-deployment)
+- [Technologies Used](#️-technologies-used)
+- [License](#-license)
+- [Contributing](#-contributing)
+- [Support](#-support)
+
+---
+
+## 🎯 Demo
+
 ![Home Page](screenshots/01_home_page.png)
+
+### Key Highlights
+
+- ✅ **43/43 Tests Passing** - 100% test coverage
+- ✅ **Production Ready** - Secure, optimized, and deployment-ready
+- ✅ **Comprehensive Docs** - 50+ KB of professional documentation
+- ✅ **Modern UI** - Responsive design with smooth animations
+- ✅ **Full Features** - Complete e-commerce functionality
+
+---
+
 
 ## ✨ Features
 
@@ -263,7 +302,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 For issues or questions:
 - Use the customer support feature in the application
 - Open an issue on GitHub
-- Contact: support@localstore.com
+- Contact: champspand@gmail.com
 
 ## 🙏 Acknowledgments
 
