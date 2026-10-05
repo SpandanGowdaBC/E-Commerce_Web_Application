@@ -13,8 +13,9 @@ class UserAuthenticationTests(TestCase):
         self.assertEqual(response.status_code, 200)
         response_post = self.client.post(reverse('user_register'), {
             'username': 'newuser',
+            'email': 'newuser@example.com',
             'password': 'password123',
-            'email': 'newuser@example.com'
+            'password_confirm': 'password123'
         })
         self.assertEqual(response_post.status_code, 302)
         self.assertTrue(User.objects.filter(username='newuser').exists())
@@ -106,36 +107,40 @@ class ShoppingCartTests(TestCase):
 
     def test_14_add_to_cart_authenticated(self):
         self.client.login(username='cartuser', password='pass')
-        response = self.client.get(reverse('add_to_cart', args=[self.p1.id]))
-        self.assertEqual(response.status_code, 302)
+        response = self.client.post(reverse('add_to_cart', args=[self.p1.id]), {'quantity': 1})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()['success'])
         cart = Cart.objects.get(user=self.user)
         self.assertEqual(cart.items.count(), 1)
         self.assertEqual(cart.items.first().product, self.p1)
 
     def test_15_add_to_cart_anonymous(self):
-        response = self.client.get(reverse('add_to_cart', args=[self.p1.id]))
-        self.assertEqual(response.status_code, 302)
+        response = self.client.post(reverse('add_to_cart', args=[self.p1.id]), {'quantity': 1})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()['success'])
         session_key = self.client.session.session_key
         cart = Cart.objects.get(session_key=session_key)
         self.assertEqual(cart.items.count(), 1)
 
     def test_16_update_cart_item_quantity(self):
         self.client.login(username='cartuser', password='pass')
-        self.client.get(reverse('add_to_cart', args=[self.p1.id]))
+        self.client.post(reverse('add_to_cart', args=[self.p1.id]), {'quantity': 1})
         cart = Cart.objects.get(user=self.user)
         item = cart.items.first()
         response = self.client.post(reverse('update_cart_item', args=[item.id]), {'quantity': 3})
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()['success'])
         item.refresh_from_db()
         self.assertEqual(item.quantity, 3)
 
     def test_17_remove_cart_item(self):
         self.client.login(username='cartuser', password='pass')
-        self.client.get(reverse('add_to_cart', args=[self.p1.id]))
+        self.client.post(reverse('add_to_cart', args=[self.p1.id]), {'quantity': 1})
         cart = Cart.objects.get(user=self.user)
         item = cart.items.first()
-        response = self.client.get(reverse('remove_cart_item', args=[item.id]))
-        self.assertEqual(response.status_code, 302)
+        response = self.client.post(reverse('remove_cart_item', args=[item.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.json()['success'])
         self.assertEqual(cart.items.count(), 0)
 
     def test_18_cart_total_price_calculation(self):
@@ -147,7 +152,7 @@ class ShoppingCartTests(TestCase):
 
     def test_19_api_cart_count(self):
         self.client.login(username='cartuser', password='pass')
-        self.client.get(reverse('add_to_cart', args=[self.p1.id]))
+        self.client.post(reverse('add_to_cart', args=[self.p1.id]), {'quantity': 1})
         response = self.client.get(reverse('cart_count'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['count'], 1)
@@ -165,16 +170,16 @@ class CheckoutAndOrdersTests(TestCase):
 
     def test_21_checkout_view_with_items(self):
         self.client.login(username='orderuser', password='pass')
-        self.client.get(reverse('add_to_cart', args=[self.p1.id]))
+        self.client.post(reverse('add_to_cart', args=[self.p1.id]), {'quantity': 1})
         response = self.client.get(reverse('checkout'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Headphones')
 
     def test_22_checkout_submission_creates_order(self):
         self.client.login(username='orderuser', password='pass')
-        self.client.get(reverse('add_to_cart', args=[self.p1.id]))
+        self.client.post(reverse('add_to_cart', args=[self.p1.id]), {'quantity': 1})
         response = self.client.post(reverse('checkout'), {
-            'shipping_address': '123 Main St, Tech City',
+            'address': '123 Main St, Tech City',
             'phone': '555-0199',
             'email': 'o@ex.com'
         })
@@ -314,7 +319,7 @@ class UIAndUXTests(TestCase):
 
     def test_39_navbar_cart_count_context(self):
         self.client.login(username='uiuser', password='pass')
-        self.client.get(reverse('add_to_cart', args=[self.p1.id]))
+        self.client.post(reverse('add_to_cart', args=[self.p1.id]), {'quantity': 1})
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
 
